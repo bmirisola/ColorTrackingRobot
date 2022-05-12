@@ -45,7 +45,7 @@ while (1):
     # for each color and bitwise_and operator
     # between imageFrame and mask determines
     # to detect only that particular color
-    kernel = np.ones((5, 5), "uint8")
+    kernel = np.ones((10, 10), "uint8")
 
     # For blue color
     mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
@@ -62,8 +62,9 @@ while (1):
         if (area > 12000):
             x, y, w, h = cv2.boundingRect(contour)
             aspect_ratio = float(w) / h
-            print(aspect_ratio)
-            if aspect_ratio <= 1.01:
+            #print(aspect_ratio)
+            # @TODO Better implement aspect ratio
+            if aspect_ratio <= 1000:
                 imageFrame = cv2.rectangle(imageFrame, (x, y),
                                            (x + w, y + h),
                                            (0, 255, 0), 2)
