@@ -79,8 +79,8 @@ while (1):
             center = [x+w/2,y+h/2]
             print(center)
 
-
-
+    cv2.putText(imageFrame, str(webcam.get(cv2.CAP_PROP_FPS)), (8, 50),
+                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3)
     # Program Termination
     cv2.imshow("Color Detector", imageFrame)
     cv2.imshow("mask",mask)
