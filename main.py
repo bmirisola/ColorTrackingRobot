@@ -11,15 +11,15 @@ webcam.set(4,480)
 webcam.set(cv2.CAP_PROP_EXPOSURE,-8)
 webcam.set(cv2.CAP_PROP_AUTOFOCUS,0)
 
-def rgb_to_hsv(event, x,y, flags, param):
+def print_bgr_of_hsv(event, x, y, flags, param):
 
     if event == cv2.EVENT_LBUTTONDBLCLK:
         print(hsvFrame[y][x])
 
 cv2.namedWindow("original")
 cv2.namedWindow("mask")
-cv2.setMouseCallback("original", rgb_to_hsv)
-cv2.setMouseCallback("mask", rgb_to_hsv)
+cv2.setMouseCallback("original", print_bgr_of_hsv)
+cv2.setMouseCallback("mask", print_bgr_of_hsv)
 
 # Start a while loop
 while (1):
