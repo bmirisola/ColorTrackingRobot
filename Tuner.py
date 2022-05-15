@@ -6,8 +6,10 @@ class Tuner:
 
     def __int__(self, windowName):
         self.windowName = windowName
-        self._mask = []
+        self._binaryImage = []
+        self._hsvImage = []
 
+        cv2.namedWindow(windowName)
         cv2.createTrackbar(Constants.h_upper, windowName, 0, 255, self.__hsvTrackBarUpdate)
         cv2.createTrackbar(Constants.s_upper, windowName, 0, 255, self.__hsvTrackBarUpdate)
         cv2.createTrackbar(Constants.v_upper, windowName, 0, 255, self.__hsvTrackBarUpdate)
@@ -17,8 +19,16 @@ class Tuner:
         cv2.createTrackbar(Constants.v_lower, windowName, 0, 255, self.__hsvTrackBarUpdate)
 
 
-    def __hsvTrackBarUpdate(self, hsv):
+    def showBinary(self):
+        cv2.imshow(self.windowName, self.mask)
 
+    def setBinary(self, binary):
+        self._binaryImage = binary
+
+    def setHSV(self, hsv):
+        self._hsvImage = hsv
+
+    def __hsvTrackBarUpdate(self):
         color_upper = np.array([cv2.getTrackbarPos(Constants.h_upper, self.windowName),
                                 cv2.getTrackbarPos(Constants.s_upper, self.windowName),
                                 cv2.getTrackbarPos(Constants.v_upper, self.windowName)]
@@ -27,8 +37,8 @@ class Tuner:
                                 cv2.getTrackbarPos(Constants.s_lower, self.windowName),
                                 cv2.getTrackbarPos(Constants.v_lower, self.windowName)],
                                np.uint8)
-        self.mask = cv2.inRange(hsv, color_lower, color_upper)
+        self.mask = cv2.inRange(self._hsvImage, color_lower, color_upper)
 
-
-    def updateBinary(self):
-        cv2.imshow(self.mask)
+    def __print_bgr_of_hsv(self,event, x, y):
+        if event == cv2.EVENT_LBUTTONDBLCLK:
+            print(self._hsvImage[y][x])
