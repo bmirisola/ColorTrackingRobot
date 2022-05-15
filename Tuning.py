@@ -2,22 +2,22 @@ import numpy as np
 import cv2
 import Constants
 
-class Tuner:
 
-    def __int__(self, windowName):
-        self.windowName = windowName
+class Tuner:
+    def __init__(self, window_name):
+        self.windowName = window_name
         self._binaryImage = []
         self._hsvImage = []
 
-        cv2.namedWindow(windowName)
-        cv2.createTrackbar(Constants.h_upper, windowName, 0, 255, self.__hsvTrackBarUpdate)
-        cv2.createTrackbar(Constants.s_upper, windowName, 0, 255, self.__hsvTrackBarUpdate)
-        cv2.createTrackbar(Constants.v_upper, windowName, 0, 255, self.__hsvTrackBarUpdate)
+        cv2.namedWindow(window_name)
+        cv2.setMouseCallback(window_name, self.__print_bgr_of_hsv)
+        cv2.createTrackbar(Constants.h_upper, window_name, 0, 255, self.__hsvTrackBarUpdate)
+        cv2.createTrackbar(Constants.s_upper, window_name, 0, 255, self.__hsvTrackBarUpdate)
+        cv2.createTrackbar(Constants.v_upper, window_name, 0, 255, self.__hsvTrackBarUpdate)
 
-        cv2.createTrackbar(Constants.h_lower, windowName, 0, 255, self.__hsvTrackBarUpdate)
-        cv2.createTrackbar(Constants.s_lower, windowName, 0, 255, self.__hsvTrackBarUpdate)
-        cv2.createTrackbar(Constants.v_lower, windowName, 0, 255, self.__hsvTrackBarUpdate)
-
+        cv2.createTrackbar(Constants.h_lower, window_name, 0, 255, self.__hsvTrackBarUpdate)
+        cv2.createTrackbar(Constants.s_lower, window_name, 0, 255, self.__hsvTrackBarUpdate)
+        cv2.createTrackbar(Constants.v_lower, window_name, 0, 255, self.__hsvTrackBarUpdate)
 
     def showBinary(self):
         cv2.imshow(self.windowName, self.mask)
@@ -39,6 +39,6 @@ class Tuner:
                                np.uint8)
         self.mask = cv2.inRange(self._hsvImage, color_lower, color_upper)
 
-    def __print_bgr_of_hsv(self,event, x, y):
+    def __print_bgr_of_hsv(self, event, x, y):
         if event == cv2.EVENT_LBUTTONDBLCLK:
             print(self._hsvImage[y][x])

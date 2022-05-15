@@ -1,25 +1,15 @@
 # Python code for Multiple Color Detection
 
-
 import numpy as np
 import cv2
+from Tuning import Tuner
 
 # Capturing video through webcam
 webcam = cv2.VideoCapture(0)
 webcam.set(3,640)
 webcam.set(4,480)
-webcam.set(cv2.CAP_PROP_EXPOSURE,-8)
-webcam.set(cv2.CAP_PROP_AUTOFOCUS,0)
 
-def print_bgr_of_hsv(event, x, y, flags, param):
-
-    if event == cv2.EVENT_LBUTTONDBLCLK:
-        print(hsvFrame[y][x])
-
-cv2.namedWindow("original")
-cv2.namedWindow("mask")
-cv2.setMouseCallback("original", print_bgr_of_hsv)
-cv2.setMouseCallback("mask", print_bgr_of_hsv)
+x = Tuner('')
 
 # Start a while loop
 while (1):
