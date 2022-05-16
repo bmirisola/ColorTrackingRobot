@@ -2,14 +2,14 @@
 
 import numpy as np
 import cv2
-from Tuning import Tuner
+from Tuner import Tuner
 
 # Capturing video through webcam
 webcam = cv2.VideoCapture(0)
 webcam.set(3,640)
 webcam.set(4,480)
 
-x = Tuner('')
+tuner = Tuner('Mask', webcam)
 
 # Start a while loop
 while (1):
@@ -23,13 +23,11 @@ while (1):
     # HSV(hue-saturation-value)
     # color space
     hsvFrame = cv2.cvtColor(imageFrame, cv2.COLOR_BGR2HSV)
-
+    tuner.setHSV(hsvFrame)
     # Set range for blue color and
     # define mask
     # B G R of HSV
-    color_lower = np.array([107, 115, 78], np.uint8)
-    color_upper = np.array([132, 240, 240], np.uint8)
-    mask = cv2.inRange(hsvFrame, color_lower, color_upper)
+    mask = tuner._binaryImage
 
     # Morphological Transform, Dilation
     # for each color and bitwise_and operator
@@ -38,18 +36,15 @@ while (1):
     kernel = np.ones((5, 5), "uint8")
 
     # For blue color
-    #mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel)
 
     # Erosion then dilation
     mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
-    mask = cv2.dilate(src=mask,kernel=kernel)
-    #cv2.erode(mask,kernel)
-    res_green = cv2.bitwise_and(imageFrame, imageFrame, mask=mask)
 
     # Creating contour to track green color
     contours, hierarchy = cv2.findContours(mask,
                                            cv2.RETR_TREE,
                                            cv2.CHAIN_APPROX_SIMPLE)
+    tuner.showBinary()
 
     for pic, contour in enumerate(contours):
         area = cv2.contourArea(contour)
@@ -73,7 +68,6 @@ while (1):
                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 3)
     # Program Termination
     cv2.imshow("Color Detector", imageFrame)
-    cv2.imshow("mask",mask)
     if cv2.waitKey(10) & 0xFF == ord('q'):
         webcam.release()
         cv2.destroyAllWindows()
