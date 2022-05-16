@@ -12,7 +12,7 @@ class Tuner:
         self._color_lower = np.array([107, 115, 78], np.uint8)
         self._color_upper = np.array([132, 240, 240], np.uint8)
 
-        self._binaryImage = cv2.inRange(cv2.imread("test/test.jpg"), self._color_upper, self._color_upper)
+        self._binaryImage =  []
         self._hsvImage = []
 
         cv2.namedWindow(windowName)
@@ -25,15 +25,23 @@ class Tuner:
         cv2.createTrackbar(Constants.s_lower, windowName, 0, 255, self.__hsvTrackBarUpdate)
         cv2.createTrackbar(Constants.v_lower, windowName, 0, 255, self.__hsvTrackBarUpdate)
 
-    def showBinary(self):
+    def grabFrame(self):
+
+        # Reading the video from the
+        # webcam in image frames
+        _, imageFrame = self.webcam.read()
+
+        #Convert to HSV
+        self._hsvImage = cv2.cvtColor(imageFrame,cv2.COLOR_BGR2HSV)
+
         self._binaryImage = cv2.inRange(self._hsvImage, self._color_lower, self._color_upper)
+
+
+    def showBinary(self):
         cv2.imshow(self.windowName, self._binaryImage)
 
-    def setBinary(self, binary):
-        self._binaryImage = binary
-
-    def setHSV(self, hsv):
-        self._hsvImage = hsv
+    def performMorphologicalOperations(self):
+        pass
 
     def __hsvTrackBarUpdate(self, val):
         self._color_upper = np.array([cv2.getTrackbarPos(Constants.h_upper, self.windowName),
