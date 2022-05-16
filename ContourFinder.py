@@ -5,8 +5,6 @@ import cv2
 class ContourFinder:
 
     def __init__(self, mask):
-        self.mask = mask
-
         # Creating contour to track colored object
         contours, hierarchy = cv2.findContours(mask,
                                                cv2.RETR_TREE,
